@@ -1,0 +1,16 @@
+[
+  {
+    "id": "w1",
+    "userId": "u1",
+    "amount": 500,
+    "timestamp": "2025-07-28T12:00:00Z",
+    "method": "Bank"
+  },
+  {
+    "id": "w2",
+    "userId": "u2",
+    "amount": 300,
+    "timestamp": "2025-07-28T15:00:00Z",
+    "method": "ZaloPay"
+  }
+]

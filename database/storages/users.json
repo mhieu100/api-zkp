@@ -1,0 +1,26 @@
+[
+  {
+    "id": "u1",
+    "username": "hieu",
+    "email": "hieu@example.com",
+    "password": "123456",
+    "walletAddress": "0x1234567890abcdef1234567890abcdef12345678",
+    "balance": 1500
+  },
+  {
+    "id": "u2",
+    "username": "toan",
+    "email": "toan@example.com",
+    "password": "123456",
+    "walletAddress": "0xabcdef1234567890abcdef1234567890abcdef12",
+    "balance": 2500
+  },
+  {
+    "id": "arg38yt097b",
+    "username": "hoang",
+    "password": "123456",
+    "email": "hoang@gmail.com",
+    "walletAddress": "31231231313",
+    "balance": 0
+  }
+]
