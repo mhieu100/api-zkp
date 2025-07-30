@@ -5,7 +5,7 @@
     "email": "hieu@example.com",
     "password": "123456",
     "walletAddress": "0x1234567890abcdef1234567890abcdef12345678",
-    "balance": 1500
+    "balance": 1391
   },
   {
     "id": "u2",
@@ -13,7 +13,7 @@
     "email": "toan@example.com",
     "password": "123456",
     "walletAddress": "0xabcdef1234567890abcdef1234567890abcdef12",
-    "balance": 2500
+    "balance": 2609
   },
   {
     "id": "arg38yt097b",

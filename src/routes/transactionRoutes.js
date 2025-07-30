@@ -1,42 +1,49 @@
-const { readData, writeData } = require('../../database');
-const express = require('express');
-const { requireLogin } = require('../middleware');
+const db = require("../../database");
+const express = require("express");
+const { requireLogin } = require("../middleware");
 const router = express.Router();
 
-router.get('/my', requireLogin, async (req, res) => {
-    try {
-        const userId = req.session.UID;
-        if (!userId) {
-            return res.status(401).json({
-                success: false,
-                message: 'User not authenticated'
-            });
-        }
+// GET /transactions
+router.get("/", requireLogin, async (req, res) => {
+  try {
+    const transactions = await db.getTransactionHistory(req.session.UID);
+    res.json(transactions);
+  } catch (error) {
+    console.error("Error fetching transactions:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 
-        const transactions = await readData('transactions.json');
-        const userTransactions = transactions.filter(transaction =>
-            transaction.fromUserId === userId ||
-            transaction.toUserId === userId
-        );
+// POST /transactions
+router.post("/", requireLogin, async (req, res) => {
+  try {
+    const { toUID, amount } = req.body;
 
-        // Sort transactions by date (newest first)
-        userTransactions.sort((a, b) =>
-            new Date(b.createdAt) - new Date(a.createdAt)
-        );
-
-        return res.status(200).json({
-            success: true,
-            message: 'Transactions fetched successfully',
-            data: userTransactions
-        });
-
-    } catch (error) {
-        console.error('Error fetching transactions:', error);
-        return res.status(500).json({
-            success: false,
-            message: 'Internal server error'
-        });
+    if (!toUID || !amount) {
+      return res.status(400).json({ error: "toUID and amount are required" });
     }
+
+    if (amount <= 0) {
+      return res.status(400).json({ error: "Số tiền không hợp lệ!" });
+    }
+
+    const currentBalance = await db.getBalanceOf(req.session.UID);
+
+    if (currentBalance < amount) {
+      return res.status(400).json({ error: "Số dư không đủ!" });
+    }
+
+    const success = await db.transfer(req.session.UID, toUID, amount);
+
+    if (success) {
+      res.json({ message: "Chuyển thành công!" });
+    } else {
+      res.status(400).json({ error: "Người dùng chuyển đến không tồn tại!" });
+    }
+  } catch (error) {
+    console.error("Error creating transaction:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 });
 
 module.exports = router;

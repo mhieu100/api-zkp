@@ -1,16 +1,14 @@
 [
   {
     "id": "d1",
-    "userId": "u1",
+    "uid": "u1",
     "amount": 1000,
-    "timestamp": "2025-07-28T08:00:00Z",
-    "method": "Bank Transfer"
+    "timestamp": 1722153600000
   },
   {
     "id": "d2",
-    "userId": "u2",
+    "uid": "u2",
     "amount": 1500,
-    "timestamp": "2025-07-28T09:30:00Z",
-    "method": "Momo"
+    "timestamp": 1722157800000
   }
 ]
