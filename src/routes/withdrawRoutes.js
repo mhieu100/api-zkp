@@ -47,7 +47,7 @@ router.post("/", requireLogin, async (req, res) => {
         `Withdrawal processed: ${amount} from exchange wallet to ${userInfo.walletAddress}`
       );
 
-      res.json({ message: "Rút tiền thành công!" });
+      res.json({ message: "Rút tiền thành công!", walletAddress: userInfo.walletAddress });
     } else {
       res.status(400).json({ error: "Không thể xử lý rút tiền!" });
     }

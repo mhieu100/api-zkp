@@ -3,6 +3,13 @@ const path = require("path");
 
 const storagePath = path.join(__dirname, "storages");
 
+async function getHighestUID() {
+  const users = await readData('users.json');
+  if (users.length === 0) return 0;
+
+  return Math.max(...users.map(user => user.uid)); // Changed from id to uid
+}
+
 async function readData(fileName) {
   try {
     const filePath = path.join(storagePath, fileName);
@@ -24,7 +31,7 @@ async function writeData(fileName, data) {
 // User functions
 async function getUserInfo(uid) {
   const users = await readData("users.json");
-  const user = users.find((u) => u.id === uid);
+  const user = users.find((u) => u.uid === uid); // Changed from id to uid
   if (!user) return null;
 
   return {
@@ -39,7 +46,7 @@ async function login(username, password) {
   const user = users.find(
     (u) => u.username === username && u.password === password
   );
-  return user ? user.id : null;
+  return user ? user.uid : null; // Changed from id to uid
 }
 
 async function register(username, password, walletAddress) {
@@ -50,8 +57,11 @@ async function register(username, password, walletAddress) {
     return false;
   }
 
+  const highestUID = await getHighestUID();
+  const newUID = highestUID + 1;
+
   const newUser = {
-    id: Date.now().toString(),
+    uid: newUID,  // Changed from id to uid
     username,
     password,
     walletAddress,
@@ -65,14 +75,14 @@ async function register(username, password, walletAddress) {
 
 async function getBalanceOf(uid) {
   const users = await readData("users.json");
-  const user = users.find((u) => u.id === uid);
+  const user = users.find((u) => u.uid === uid); // Changed from id to uid
   return user ? user.balance : 0;
 }
 
 async function getUIDbyWalletAddress(walletAddress) {
   const users = await readData("users.json");
   const user = users.find((u) => u.walletAddress === walletAddress);
-  return user ? user.id : null;
+  return user ? user.uid : null; // Changed from id to uid
 }
 
 // Transaction functions
@@ -100,8 +110,8 @@ async function transfer(fromUID, toUID, amount) {
   const users = await readData("users.json");
   const transactions = await readData("transactions.json");
 
-  const fromUser = users.find((u) => u.id === fromUID);
-  const toUser = users.find((u) => u.id === toUID);
+  const fromUser = users.find((u) => u.uid === fromUID); // Changed from id to uid
+  const toUser = users.find((u) => u.uid === toUID); // Changed from id to uid
 
   if (!fromUser || !toUser) {
     return false;
@@ -148,7 +158,7 @@ async function deposit(uid, amount) {
   const users = await readData("users.json");
   const deposits = await readData("deposits.json");
 
-  const user = users.find((u) => u.id === uid);
+  const user = users.find((u) => u.uid === uid); // Changed from id to uid
   if (!user) return;
 
   // Update user balance
@@ -195,7 +205,7 @@ async function withdraw(uid, amount) {
   const users = await readData("users.json");
   const withdrawals = await readData("withdrawals.json");
 
-  const user = users.find((u) => u.id === uid);
+  const user = users.find((u) => u.uid === uid); // Changed from id to uid
   if (!user || user.balance < amount) return false;
 
   // Update user balance
